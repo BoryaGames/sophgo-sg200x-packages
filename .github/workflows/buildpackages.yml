@@ -39,7 +39,7 @@ jobs:
     - name: build chroot
       if: steps.sbuild-chroot.outputs.cache-hit != 'true'
       run: |
-        sudo sbuild-createchroot --merged-usr --verbose --include="gcc-13-riscv64-linux-gnu,perl-openssl-defaults,lintian" --make-sbuild-tarball=/srv/chroots/sid-sbuild.tgz sid /srv/chroots/sid http://deb.debian.org/debian/ || true
+        sudo sbuild-createchroot --merged-usr --verbose --include="gcc-13-aarch64-linux-gnu,perl-openssl-defaults,lintian" --make-sbuild-tarball=/srv/chroots/sid-sbuild.tgz sid /srv/chroots/sid http://deb.debian.org/debian/ || true
         cat /srv/chroots/sid/debootstrap/debootstrap.log  || true
         cat .github/setupchroot | sudo sbuild-shell sid-amd64-sbuild
     - name: Build Package Files
@@ -49,7 +49,7 @@ jobs:
         cd ${{ matrix.packages }}
         mkdir -p ../../out/
         make package-prepare
-        sg sbuild "sbuild -n --build=amd64 --profiles=cross --host=riscv64 -d sid --build-dir ../../out/"
+        sg sbuild "sbuild -n --build=amd64 --profiles=cross --host=arm64 -d sid --build-dir ../../out/"
     - name: Upload Package
       uses: actions/upload-artifact@v4
       with:
